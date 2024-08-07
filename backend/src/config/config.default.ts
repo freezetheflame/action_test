@@ -18,8 +18,8 @@ const ormConfig = {
     type: 'mysql',
     host: 'localhost',
     port: 3306,
-    username: 'root',
-    password: 'Myhongqiche123!',
+    username: 'test',
+    password: 'hello',
     database: 'test',
     entities: [User],
     synchronize: true, // 生产环境下建议关闭

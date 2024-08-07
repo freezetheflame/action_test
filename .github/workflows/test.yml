@@ -41,7 +41,7 @@ jobs:
 
       - name: Set up MySQL
         run: |
-          mysql -u root -p password -e "CREATE DATABASE IF NOT EXISTS test;"
+          mysql -h 127.0.0.1 -u root -ppassword -e "CREATE DATABASE IF NOT EXISTS test;"
 
       - name: Install backend dependencies
         working-directory: ./backend

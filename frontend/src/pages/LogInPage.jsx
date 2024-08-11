@@ -1,53 +1,60 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/login.css';
 import axios from 'axios';
+import '../styles/LogInPage.css';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleLogin = async () => {
     try {
       const response = await axios.post('http://127.0.0.1:7001/api/login', {
         username,
-        password
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-        }
+        password,
       });
 
       if (response.data.success) {
-        navigate('/');
+        // Store the JWT token in localStorage
+        console.log('Token:', response.data);
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('username', username);
+        localStorage.setItem('userId', response.data.token.id);
+        // Navigate to the home page
+        navigate('/Home');
       } else {
-        console.error(response.data.message);
+        setError('Invalid username or password');
       }
     } catch (error) {
-      console.error('登录请求失败:', error);
+      setError('An error occurred during login');
     }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleLogin();
   };
 
   return (
     <div className="login-container">
-      <h2>登录</h2>
+      <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <input 
           type="text" 
-          placeholder="用户名" 
+          placeholder="Username" 
           value={username} 
           onChange={(e) => setUsername(e.target.value)} 
         />
         <input 
           type="password" 
-          placeholder="密码" 
+          placeholder="Password" 
           value={password} 
           onChange={(e) => setPassword(e.target.value)} 
         />
-        <button type="submit">登录</button>
+        {error && <p className="error">{error}</p>}
+        <button type="submit">Login</button>
       </form>
     </div>
   );

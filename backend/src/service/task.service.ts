@@ -13,18 +13,30 @@ export class TaskService {
     projectRepository: Repository<Project>;
   
 
-  async createTask(name: string, description: string, ownerId: number,projectId: number,content: string,status: string): Promise<Task> {
-    const newTask = new Task();
-    newTask.name = name;
-    newTask.description = description;
-    newTask.content = content;
-    newTask.status = status;
-    if(ownerId) newTask.ownerId = ownerId;
-    else newTask.ownerId = await this.projectRepository.find({where:{id:projectId}}).then(res=>res[0].ownerId);
-    newTask.projectId = projectId;
-
-    return await this.taskRepository.save(newTask);
-  }
+    async createTask(
+      name: string,
+      description: string,
+      ownerId: number,
+      projectId: number,
+      content: string,
+      status: string,
+      attachments?: { name: string, url: string }[],
+      comments?: { user: string, comment: string, date: Date }[]
+    ): Promise<Task> {
+      const newTask = new Task();
+      newTask.name = name;
+      newTask.description = description;
+      newTask.content = content;
+      newTask.status = status;
+      newTask.ownerId = ownerId || await this.projectRepository.findOne({ where: { id: projectId } }).then(res => res.ownerId);
+      newTask.projectId = projectId;
+    
+      if (attachments) newTask.attachments = attachments;
+      if (comments) newTask.comments = comments;
+    
+      return await this.taskRepository.save(newTask);
+    }
+    
 
   async getTaskById(id: number) {
     return await this.taskRepository.find({where:{id}});

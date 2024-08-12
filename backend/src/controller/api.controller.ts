@@ -50,9 +50,10 @@ export class APIController {
   }
 
   @Post('/createTask')
-  async createTask(@Body() body: { name: string; description: string; ownerId: number;projectId: number;content:string; status:string,}) {
-    const { name, description, ownerId,projectId,content,status } = body;
-    return await this.TaskService.createTask(name, description, ownerId,projectId,content,status);
+  async createTask(@Body() body: { name: string; description: string; ownerId: number;projectId: number;content:string; status:string;attachments?: { name: string, url: string }[];
+  comments?: { user: string, comment: string, date: Date }[]}) {
+    const { name, description, ownerId, projectId, content, status, attachments, comments } = body;
+    return await this.TaskService.createTask(name, description, ownerId, projectId, content, status, attachments, comments);
   }
 
   @Get('/getTasksByProject')

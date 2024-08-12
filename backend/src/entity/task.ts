@@ -1,4 +1,4 @@
-import { Entity, Column,PrimaryGeneratedColumn, } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Task {
@@ -23,12 +23,9 @@ export class Task {
   @Column()
   status: string;  // 任务状态(todo | doing | done)
 
-  //附件
-  @Column()
-  attachment: string;
-  //评论
-  @Column()
-  comment: string;
+  @Column("simple-json", { nullable: true })
+  attachments: { name: string, url: string }[];  // JSON array to store attachments
 
-  
+  @Column("simple-json", { nullable: true })
+  comments: { user: string, comment: string, date: Date }[];  // JSON array to store comments
 }

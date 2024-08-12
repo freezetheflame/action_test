@@ -23,7 +23,12 @@ export class Task {
   @Column()
   status: string;  // 任务状态(todo | doing | done)
 
+  //附件
+  @Column()
+  attachment: string;
+  //评论
+  @Column()
+  comment: string;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date;
+  
 }

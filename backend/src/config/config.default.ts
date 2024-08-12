@@ -8,7 +8,7 @@ import {Task} from "../entity/task";
 Object.defineProperty(exports, "__esModule", { value: true });
 
 const ormConfig = {
-    key: "test",
+    keys: "test",
     koa: {
         port: 7001, // 你想要使用的端口号
       },
